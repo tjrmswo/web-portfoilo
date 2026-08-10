@@ -12,18 +12,15 @@ export default function Hero() {
           <span className="mb-6 inline-block w-fit rounded-full border border-violet-300 bg-violet-50 px-3 py-1 font-mono text-xs text-violet-700 dark:border-violet-800 dark:bg-violet-950 dark:text-violet-300">
             {intro.role}
           </span>
-        </Reveal>
-        <Reveal direction="left" delay={100}>
           <h1 className="text-3xl font-bold tracking-tight sm:text-7xl">
             {intro.name}
           </h1>
-        </Reveal>
-        <Reveal direction="left" delay={200}>
           <p className="mt-6 max-w-xl whitespace-pre-line text-lg leading-relaxed text-zinc-600 dark:text-zinc-400 sm:text-xl">
             {intro.tagline}
           </p>
-        </Reveal>
-        <Reveal direction="left" delay={300}>
+          <p className="mt-3 max-w-xl text-zinc-500 dark:text-zinc-500">
+            {intro.evidence}
+          </p>
           <div className="mt-10 flex flex-wrap gap-4 text-sm font-medium">
             <a
               href={intro.resumeUrl}

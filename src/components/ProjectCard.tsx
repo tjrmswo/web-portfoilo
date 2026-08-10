@@ -2,8 +2,8 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import Reveal from "@/components/Reveal";
 import ProjectDetailModal from "@/components/ProjectDetailModal";
+import { useProjectSpotlight } from "@/components/ProjectSpotlightContext";
 import type { Project, ProjectMedia } from "@/lib/content";
 
 function MediaGallery({ media }: { media: ProjectMedia[] }) {
@@ -106,102 +106,113 @@ function MediaPreview({ project }: { project: Project }) {
   );
 }
 
-export default function ProjectCard({
-  project,
-  direction,
-}: {
-  project: Project;
-  direction: "left" | "right";
-}) {
-  const [open, setOpen] = useState(false);
+export default function ProjectCard({ project }: { project: Project }) {
+  const [manualOpen, setManualOpen] = useState(false);
+  // Token of the last spotlight request the user has dismissed, so closing the
+  // modal doesn't get immediately reopened by the still-active spotlight state.
+  const [dismissedToken, setDismissedToken] = useState(-1);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const { spotlight } = useProjectSpotlight();
+  const isSpotlighted =
+    spotlight?.projectId === project.id && spotlight.token !== dismissedToken;
+  const open = manualOpen || isSpotlighted;
 
   const handleClose = () => {
-    setOpen(false);
+    setManualOpen(false);
+    if (spotlight?.projectId === project.id) {
+      setDismissedToken(spotlight.token);
+    }
     triggerRef.current?.focus();
   };
 
   return (
     <>
-      <Reveal direction={direction}>
-        <article className="rounded-3xl border border-black/10 p-6 dark:border-white/10 sm:p-8">
-          <MediaPreview project={project} />
+      <article
+        id={`project-${project.id}`}
+        className="scroll-mt-16 rounded-3xl border border-black/10 p-6 dark:border-white/10 sm:p-8"
+      >
+        <MediaPreview project={project} />
 
-          <div className="mt-6 flex flex-wrap items-baseline justify-between gap-2">
-            <h3 className="text-2xl font-semibold tracking-tight">
-              {project.name}
-            </h3>
-            <span className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
-              {project.period}
-            </span>
-          </div>
+        <div className="mt-6 flex flex-wrap items-baseline justify-between gap-2">
+          <h3 className="text-2xl font-semibold tracking-tight">
+            {project.name}
+          </h3>
+          <span className="font-mono text-xs text-zinc-500 dark:text-zinc-400">
+            {project.period}
+          </span>
+        </div>
 
-          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-zinc-500 dark:text-zinc-400">
-            <span>{project.role}</span>
-            <span className="text-zinc-300 dark:text-zinc-700">·</span>
-            <span>{project.type}</span>
-          </div>
+        <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <span>{project.role}</span>
+          <span className="text-zinc-300 dark:text-zinc-700">·</span>
+          <span>{project.type}</span>
+        </div>
 
-          <p className="mt-4 leading-relaxed text-zinc-600 dark:text-zinc-400">
-            {project.summary}
-          </p>
+        <p className="mt-4 leading-relaxed text-zinc-600 dark:text-zinc-400">
+          {project.summary}
+        </p>
 
-          <div className="mt-4 flex flex-wrap gap-2">
-            {project.badges.map((badge) => (
-              <span
-                key={badge}
-                className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
-              >
-                {badge}
-              </span>
-            ))}
-          </div>
-
-          <div className="mt-3 flex flex-wrap gap-2">
-            {project.stack.map((tech) => (
-              <span
-                key={tech}
-                className="rounded-full border border-violet-200 bg-violet-50 px-3 py-1 font-mono text-xs text-violet-700 dark:border-violet-900 dark:bg-violet-950 dark:text-violet-300"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-
-          <div className="mt-6 flex flex-wrap gap-3 text-sm font-medium">
-            <button
-              ref={triggerRef}
-              type="button"
-              onClick={() => setOpen(true)}
-              className="rounded-full bg-black px-4 py-2 text-white transition-colors hover:bg-zinc-700 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+        <div className="mt-4 flex flex-wrap gap-2">
+          {project.badges.map((badge) => (
+            <span
+              key={badge}
+              className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
             >
-              자세히 보기
-            </button>
-            {project.links.demo && (
-              <a
-                href={project.links.demo}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-black/10 px-4 py-2 transition-colors hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
-              >
-                Live Demo ↗
-              </a>
-            )}
-            {project.links.github && (
-              <a
-                href={project.links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-black/10 px-4 py-2 transition-colors hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
-              >
-                GitHub ↗
-              </a>
-            )}
-          </div>
-        </article>
-      </Reveal>
+              {badge}
+            </span>
+          ))}
+        </div>
 
-      <ProjectDetailModal project={project} open={open} onClose={handleClose} />
+        <div className="mt-3 flex flex-wrap gap-2">
+          {project.stack.map((tech) => (
+            <span
+              key={tech}
+              className="rounded-full border border-violet-200 bg-violet-50 px-3 py-1 font-mono text-xs text-violet-700 dark:border-violet-900 dark:bg-violet-950 dark:text-violet-300"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-3 text-sm font-medium">
+          <button
+            ref={triggerRef}
+            type="button"
+            onClick={() => setManualOpen(true)}
+            className="rounded-full bg-black px-4 py-2 text-white transition-colors hover:bg-zinc-700 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+          >
+            자세히 보기
+          </button>
+          {project.links.demo && (
+            <a
+              href={project.links.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-black/10 px-4 py-2 transition-colors hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
+            >
+              Live Demo ↗
+            </a>
+          )}
+          {project.links.github && (
+            <a
+              href={project.links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-black/10 px-4 py-2 transition-colors hover:bg-black/5 dark:border-white/20 dark:hover:bg-white/10"
+            >
+              GitHub ↗
+            </a>
+          )}
+        </div>
+      </article>
+
+      <ProjectDetailModal
+        project={project}
+        open={open}
+        onClose={handleClose}
+        scrollToId={isSpotlighted ? spotlight?.targetId : undefined}
+        scrollToken={isSpotlighted ? spotlight?.token : undefined}
+      />
     </>
   );
 }

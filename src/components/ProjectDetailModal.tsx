@@ -99,14 +99,23 @@ export default function ProjectDetailModal({
   project,
   open,
   onClose,
+  scrollToId,
+  scrollToken,
 }: {
   project: Project;
   open: boolean;
   onClose: () => void;
+  // DOM id of a case study/performance block to scroll to once the modal has
+  // finished opening, and a token that changes on every request so re-clicking
+  // the same evidence link (modal already open) still triggers a re-scroll.
+  scrollToId?: string;
+  scrollToken?: number;
 }) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const mounted = useMounted();
   const [visible, setVisible] = useState(false);
+  const [highlightId, setHighlightId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -129,6 +138,25 @@ export default function ProjectDetailModal({
       setVisible(false);
     };
   }, [open, onClose]);
+
+  useEffect(() => {
+    if (!open || !scrollToId) return;
+
+    let clearHighlight: ReturnType<typeof setTimeout>;
+    const timer = setTimeout(() => {
+      const el = contentRef.current?.querySelector(`#${CSS.escape(scrollToId)}`);
+      el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setHighlightId(scrollToId);
+      // Started only once the highlight actually turns on, so it always stays
+      // visible for a full 2s regardless of when this effect happened to run.
+      clearHighlight = setTimeout(() => setHighlightId(null), 2000);
+    }, 350);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(clearHighlight);
+    };
+  }, [open, scrollToId, scrollToken]);
 
   if (!mounted || !open) return null;
 
@@ -185,8 +213,15 @@ export default function ProjectDetailModal({
           </button>
         </div>
 
-        <div className="flex-1 px-6 py-6">
-          <section>
+        <div ref={contentRef} className="flex-1 px-6 py-6">
+          <section
+            id={`overview-${project.id}`}
+            className={`scroll-mt-24 rounded-2xl transition-all ${
+              highlightId === `overview-${project.id}`
+                ? "border-2 border-violet-500 bg-violet-50/40 p-6 ring-4 ring-violet-300/60 dark:border-violet-400 dark:bg-violet-950/20 dark:ring-violet-700/60"
+                : "border-2 border-transparent"
+            }`}
+          >
             <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-400 dark:text-zinc-600">
               Project Overview
             </h4>
@@ -214,7 +249,12 @@ export default function ProjectDetailModal({
                 {featuredCaseStudies.map((cs) => (
                   <div
                     key={cs.title}
-                    className="rounded-2xl border-2 border-emerald-400/60 bg-emerald-50/40 p-6 shadow-sm dark:border-emerald-500/40 dark:bg-emerald-950/20"
+                    id={cs.id}
+                    className={`scroll-mt-24 rounded-2xl border-2 bg-emerald-50/40 p-6 shadow-sm transition-shadow dark:bg-emerald-950/20 ${
+                      cs.id && highlightId === cs.id
+                        ? "border-violet-500 ring-4 ring-violet-300/60 dark:border-violet-400 dark:ring-violet-700/60"
+                        : "border-emerald-400/60 dark:border-emerald-500/40"
+                    }`}
                   >
                     <FeaturedBadge />
                     <h5 className="mt-3 text-lg font-semibold leading-snug">
@@ -233,14 +273,23 @@ export default function ProjectDetailModal({
                 ))}
 
                 {project.performance && (
-                  <div className="rounded-2xl border-2 border-emerald-400/60 bg-emerald-50/40 p-6 shadow-sm dark:border-emerald-500/40 dark:bg-emerald-950/20">
+                  <div
+                    id={`performance-${project.id}`}
+                    className={`scroll-mt-24 rounded-2xl border-2 bg-emerald-50/40 p-6 shadow-sm transition-shadow dark:bg-emerald-950/20 ${
+                      highlightId === `performance-${project.id}`
+                        ? "border-violet-500 ring-4 ring-violet-300/60 dark:border-violet-400 dark:ring-violet-700/60"
+                        : "border-emerald-400/60 dark:border-emerald-500/40"
+                    }`}
+                  >
                     <FeaturedBadge />
                     <h5 className="mt-3 text-lg font-semibold leading-snug">
-                      Performance Optimization
+                      {project.performance.title}
                     </h5>
-                    <p className="mt-3 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
-                      {project.performance.description}
-                    </p>
+                    <ProblemActionResult
+                      problem={project.performance.problem}
+                      action={project.performance.action}
+                      result={project.performance.result}
+                    />
                     <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
                       <div className="rounded-xl border border-black/10 bg-white/70 px-4 py-3 dark:border-white/10 dark:bg-black/20">
                         <p className="text-xs text-zinc-400 dark:text-zinc-600">

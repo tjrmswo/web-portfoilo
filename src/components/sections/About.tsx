@@ -6,25 +6,19 @@ import { about } from "@/lib/content";
 export default function About() {
   return (
     <Section id="about" index="02" title="About me">
-      <div className="grid grid-cols-1 items-center gap-10 sm:grid-cols-[1fr_auto]">
-        <div className="space-y-4">
-          <Reveal direction="right">
+      <Reveal direction="right">
+        <div className="grid grid-cols-1 items-center gap-10 sm:grid-cols-[1fr_auto]">
+          <div className="space-y-4">
             <p className="max-w-2xl text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
               {about.paragraph}
             </p>
-          </Reveal>
-          <Reveal direction="right" delay={100}>
             <p className="max-w-2xl text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
               {about.content}
             </p>
-          </Reveal>
-          <Reveal direction="right" delay={100}>
             <p className="max-w-2xl text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
               {about.hobby}
             </p>
-          </Reveal>
-        </div>
-        <Reveal direction="left" delay={150}>
+          </div>
           <div className="relative h-72 w-56 overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 sm:h-80 sm:w-64">
             <Image
               src={about.photo.src}
@@ -34,8 +28,8 @@ export default function About() {
               className="object-cover"
             />
           </div>
-        </Reveal>
-      </div>
+        </div>
+      </Reveal>
     </Section>
   );
 }

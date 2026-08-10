@@ -1,8 +1,9 @@
 export const intro = {
   role: 'Frontend Developer',
   name: '서근재',
-  tagline:
-    '매일 조금씩 발전하는 과정에서 자아효능감을 느끼며, 원인을 끝까지 파고들어 문제를 해결하는 프론트엔드 개발자입니다.',
+  tagline: '구조적으로 진단하고 문제를 해결하는 프론트엔드 개발자입니다.',
+  evidence:
+    '엣지케이스 28건 방어, 번들 15% 감량 — 근본 원인을 끝까지 추적해 얻은 결과입니다.',
   // TODO: 실제 이력서 파일/링크로 교체해주세요.
   resumeUrl: '#',
   githubUrl: 'https://github.com/tjrmswo',
@@ -21,33 +22,36 @@ export const about = {
 };
 
 // About me 세 문단에서 뽑아낸 역량. 각각 실제 프로젝트 증거와 짝지어 둡니다.
+// evidenceProjectId/evidenceTargetId: 클릭 시 Projects 섹션의 해당 프로젝트 카드로 스크롤하고
+// 모달을 열어 targetId 요소(피처드 케이스 스터디 또는 퍼포먼스 블록)로 바로 스크롤합니다.
 export const strengths = [
   {
     title: '꾸준함',
     tagline: '느리지만 매일 쌓아가는 힘',
     description:
-      '군 생활 중 헬스를 시작하며 배운 건 결과보다 과정의 가치였습니다. 오늘 들지 못한 무게를 내일 들어 올리는 성장의 즐거움을, 코드 앞에서도 똑같이 느낍니다.',
-    evidenceLabel: 'FSD 아키텍처 전환 설득',
-    evidenceDetail:
-      '팀원의 반대 의견에 부딪혔을 때 포기하는 대신, 겪고 있는 문제를 하나씩 구조적으로 매핑해 제시하며 합의를 이끌어냈습니다.',
+      '완성 이후에도 손을 떼지 않습니다. 기능을 배포한 뒤에도 코드 품질을 점검하고 다듬는 작업을 습관처럼 이어가며, 작은 개선을 꾸준히 쌓아 올립니다.',
   },
   {
     title: '근본 원인 탐구',
     tagline: "'왜'를 끝까지 파고드는 집요함",
     description:
-      '"왜 이 문제가 발생했을까?"를 고민하며 구조적 원인을 진단하고 고쳐나가는 과정에서 가장 큰 자아효능감을 느낍니다.',
+      '겉으로 드러난 증상을 고치는 데서 멈추지 않습니다. 로그와 수치를 직접 확인하며 원인이 명확해질 때까지 파고들고, 짐작이 아니라 확인된 사실로 결정합니다.',
     evidenceLabel: '번들 사이즈 원인 추적',
     evidenceDetail:
-      '"왜 다 무거울까"라는 질문 하나로 배럴 파일 속에 숨어 있던 원인을 끝까지 추적해, 초기 로딩 용량을 15% 줄였습니다.',
+      '"왜 다 무거울까"라는 질문 하나로 배럴 파일 속에 숨어 있던 트리셰이킹 차단 원인을 끝까지 추적해, 초기 로딩 용량을 15% 줄였습니다.',
+    evidenceProjectId: 'connecting-road',
+    evidenceTargetId: 'performance-connecting-road',
   },
   {
     title: '디테일에 대한 집착',
     tagline: '완성도를 끝까지 다듬는 고집',
     description:
-      '박자감과 감성, 디테일을 끊임없이 다듬어 완성도를 높이는 고집은 프론트엔드 작업과 닮아 있습니다. 사용자와 가장 가까운 접점에서 섬세한 경험을 만드는 일이라 믿습니다.',
+      '정상 케이스만으로는 만족하지 않습니다. 놓치기 쉬운 예외 상황까지 하나씩 검증해, 사용자가 실제로 마주칠 모든 흐름에서 끊기지 않는 경험을 만듭니다.',
     evidenceLabel: '엣지케이스 28건 전부 방어',
     evidenceDetail:
       '매트릭스 테스트로 끝내지 않고, 놓칠 뻔한 사각지대 3건까지 재현 테스트로 추가로 찾아냈습니다.',
+    evidenceProjectId: 'connecting-road',
+    evidenceTargetId: 'edge-case-defense',
   },
 ];
 
@@ -55,17 +59,53 @@ export const now = [
   'ConnectingRoad 출시를 준비하며, 에러 모니터링·데이터 검증 등 실제 운영을 전제로 한 의사결정을 다듬는 중입니다.',
   'TMD교육그룹에서 3개 센터 통합 웹 대시보드 프로젝트를 진행 중입니다 (2026.04~).',
   'Claude Code 기반 AI 페어 프로그래밍을 프로젝트 전반에 적용하고, 생성된 코드를 구조·엣지케이스·성능 기준으로 직접 리뷰·리팩터링하는 습관을 유지하고 있습니다.',
-  '이 포트폴리오 사이트도 Next.js 16(브레이킹 체인지 대응)으로 계속 다듬는 중입니다.',
+  '이 포트폴리오 사이트도   계속 다듬는 중입니다.',
 ];
 
+// icon은 실제 이미지를 가리키는 절대 경로/URL입니다. 로고가 없는 항목은 비워둡니다.
 export const skillGroups = [
-  { category: 'Core', items: ['React', 'Next.js', 'TypeScript'] },
+  {
+    category: 'Core',
+    items: [
+      { name: 'React', icon: 'https://skillicons.dev/icons?i=react' },
+      { name: 'Next.js', icon: 'https://skillicons.dev/icons?i=nextjs' },
+      { name: 'TypeScript', icon: 'https://skillicons.dev/icons?i=ts' },
+    ],
+  },
   {
     category: '데이터·상태',
-    items: ['React Query', 'Zustand', 'Zod', 'React Hook Form'],
+    items: [
+      { name: 'React Query', icon: 'https://cdn.simpleicons.org/reactquery' },
+      { name: 'Zustand', icon: '/icons/zustand.svg' },
+      { name: 'Zod', icon: 'https://cdn.simpleicons.org/zod' },
+      {
+        name: 'React Hook Form',
+        icon: 'https://cdn.simpleicons.org/reacthookform',
+      },
+    ],
   },
-  { category: '협업·아키텍처', items: ['FSD', 'Git', 'GitHub Actions'] },
-  { category: '인프라', items: ['AWS', 'Docker', 'NGINX'] },
+  {
+    category: '협업·아키텍처',
+    items: [
+      {
+        name: 'FSD',
+        icon: 'https://raw.githubusercontent.com/feature-sliced/documentation/main/static/img/brand/logo-square.png',
+      },
+      { name: 'Git', icon: 'https://skillicons.dev/icons?i=git' },
+      {
+        name: 'GitHub Actions',
+        icon: 'https://skillicons.dev/icons?i=githubactions',
+      },
+    ],
+  },
+  {
+    category: '인프라',
+    items: [
+      { name: 'AWS', icon: 'https://skillicons.dev/icons?i=aws' },
+      { name: 'Docker', icon: 'https://skillicons.dev/icons?i=docker' },
+      { name: 'NGINX', icon: 'https://skillicons.dev/icons?i=nginx' },
+    ],
+  },
 ];
 
 export type ProjectLinks = {
@@ -93,10 +133,15 @@ export type CaseStudy = {
   retrospective?: string;
   // 서브 기여용 1줄 압축 요약 (**bold** 표기 지원). 상시 노출되는 스캔 리스트에 사용.
   oneLiner?: string;
+  // Strengths 섹션 evidence 링크가 이 항목으로 바로 스크롤할 때 사용하는 DOM id.
+  id?: string;
 };
 
 export type PerformanceNote = {
-  description: string;
+  title: string;
+  problem: string;
+  action: string;
+  result: string;
   before: string;
   after: string;
   improvement: string;
@@ -180,11 +225,12 @@ export const projects: Project[] = [
         oneLiner:
           'LLM 응답 포맷 불안정 → **프롬프트 구조 표준화** 설계·도입 → **파싱 오류 0건**',
         problem:
-          'LLM 응답 포맷이 호출마다 달라져 DB 저장·FE 파싱이 불안정 — 이전 프로젝트(본론)에서 검증된 해결 패턴을 근거로 프롬프트 구조 표준화를 설계·제안.',
+          'LLM 응답 포맷이 호출마다 달라져 DB 저장·FE 파싱이 불안정 — 이전 프로젝트에서 경험한 프롬프트 내용을 근거로 프롬프트 구조 표준화를 설계·제안.',
         action: '',
         result: '포맷 불일치발 화면 깨짐 제거, DB 저장·파싱 파이프라인 안정화.',
       },
       {
+        id: 'edge-case-defense',
         title:
           '사각지대 28건 전부 방어 — 백엔드 계약 공백을 프론트엔드 검증으로 무력화',
         featured: true,
@@ -219,17 +265,23 @@ export const projects: Project[] = [
       {
         title: 'FSD 아키텍처 전환',
         oneLiner:
-          '역할별 폴더 구조 탐색 비용 과다 → **FSD 레이어 설계** 제안·설득 → **순환 참조 13→10개** 감소',
+          '역할별 폴더 구조 탐색 비용 증가 → **FSD 레이어 구조** 설계·도입 → 기능 단위 응집도 확보',
         problem:
-          '역할별(components/hooks/apis) 폴더 구조로 탐색 비용·응집 부재 발생, 팀 반대 의견 존재 — 문제를 구조적으로 매핑해 FSD 레이어 도입 설계·제안.',
+          '역할별(components/hooks/apis) 폴더 구조에서 기능이 늘어날수록 관련 코드가 여러 폴더에 흩어져 탐색 비용과 응집 부재 문제가 커졌습니다.',
         action: '',
         result:
-          'Next.js 재구축 시점과 맞물려 합의 확보, 모듈 순환 참조 13개 → 10개로 감량.',
+          'Next.js 재구축 시점에 맞춰 FSD(Feature-Sliced Design) 레이어 구조로 전환해, 기능별로 코드가 한곳에 응집되도록 구조를 개선했습니다.',
       },
     ],
     performance: {
-      description:
-        '로드맵 섹션 화면별 초기 로딩 용량을 점검하다 이상한 점을 발견했습니다 — 차트가 전혀 없는 산업군 선택 화면과 채용공고 입력 화면이, 그래프가 있는 결과 분석 화면과 거의 같은 용량을 사용자에게 매번 내려받게 하고 있었습니다. Bundle Analyzer로 추적한 결과, 여러 화면이 공유하는 배럴(index.ts) 파일이 차트 라이브러리(chart.js)를 최상단에서 함께 export하고 있었고, 이 라이브러리가 모듈 로드 즉시 초기화 코드를 실행하는 부작용(side effect) 때문에 트리셰이킹이 차단되고 있었습니다. 배럴에서 차트 컴포넌트 export를 제거하고, 실제로 필요한 화면 하나에서만 Dynamic Import로 불러오도록 분리했습니다.',
+      title:
+        '초기 로딩 번들 15% 감량 — 배럴 파일에 숨어 있던 트리셰이킹 차단 원인 추적',
+      problem:
+        '로드맵 섹션 화면별 초기 로딩 용량을 점검하다 이상한 점을 발견했습니다 — 차트가 전혀 없는 산업군 선택 화면과 채용공고 입력 화면이, 그래프가 있는 결과 분석 화면과 거의 같은 용량을 사용자에게 매번 내려받게 하고 있었습니다.',
+      action:
+        'Bundle Analyzer로 추적한 결과, 여러 화면이 공유하는 배럴(index.ts) 파일이 차트 라이브러리(chart.js)를 최상단에서 함께 export하고 있었고, 이 라이브러리가 모듈 로드 즉시 초기화 코드를 실행하는 부작용(side effect) 때문에 트리셰이킹이 차단되고 있었습니다. 배럴에서 차트 컴포넌트 export를 제거하고, 실제로 필요한 화면 하나에서만 Dynamic Import로 불러오도록 분리했습니다.',
+      result:
+        '차트가 없는 화면의 초기 로딩 번들 용량을 436KB → 367KB로 15% 줄였습니다.',
       before: '436KB',
       after: '367KB',
       improvement: '-15%',

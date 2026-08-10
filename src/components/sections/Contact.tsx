@@ -5,7 +5,7 @@ import { contact } from "@/lib/content";
 export default function Contact() {
   return (
     <Section id="contact" index="08" title="Contact">
-      <Reveal direction="left">
+      <Reveal direction="right">
         <div className="max-w-xl space-y-4 text-lg">
           <p>
             <span className="mr-3 font-mono text-sm text-zinc-500 dark:text-zinc-400">

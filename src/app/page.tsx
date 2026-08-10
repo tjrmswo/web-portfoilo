@@ -1,6 +1,7 @@
 import Nav from "@/components/Nav";
 import ScrollProgress from "@/components/ScrollProgress";
 import EasterEgg from "@/components/EasterEgg";
+import { ProjectSpotlightProvider } from "@/components/ProjectSpotlightContext";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Strengths from "@/components/sections/Strengths";
@@ -17,17 +18,19 @@ export default function Home() {
       <ScrollProgress />
       <Nav />
       <main className="flex-1">
-        <Hero />
-        <About />
-        <Strengths />
-        <Now />
-        <Skills />
-        <Projects />
-        <GithubActivity />
-        <Contact />
+        <ProjectSpotlightProvider>
+          <Hero />
+          <About />
+          <Strengths />
+          <Now />
+          <Skills />
+          <Projects />
+          <GithubActivity />
+          <Contact />
+        </ProjectSpotlightProvider>
       </main>
       <footer className="border-t border-black/5 py-8 text-center text-xs text-zinc-400 dark:border-white/10 dark:text-zinc-600">
-        © 근재. Built with Next.js.
+        © 서근재. Built with Next.js.
       </footer>
     </div>
   );
