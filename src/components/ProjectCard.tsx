@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import Image from "next/image";
 import ProjectDetailModal from "@/components/ProjectDetailModal";
 import { useProjectSpotlight } from "@/components/ProjectSpotlightContext";
@@ -14,6 +14,14 @@ function MediaGallery({ media }: { media: ProjectMedia[] }) {
     media.length > 1 ? [media[media.length - 1], ...media, media[0]] : media;
   const [virtualIndex, setVirtualIndex] = useState(1);
   const [withTransition, setWithTransition] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Swipe/drag (touch, mouse, or pen — Pointer Events unify all three): track
+  // drag distance and follow the pointer 1:1 while dragging, then either
+  // commit to the next/previous slide or snap back on release.
+  const dragStart = useRef<{ x: number; y: number; id: number } | null>(null);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [dragging, setDragging] = useState(false);
 
   const goTo = (next: number) => {
     setWithTransition(true);
@@ -30,13 +38,58 @@ function MediaGallery({ media }: { media: ProjectMedia[] }) {
     }
   };
 
+  const handlePointerDown = (e: ReactPointerEvent) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    dragStart.current = { x: e.clientX, y: e.clientY, id: e.pointerId };
+  };
+
+  const handlePointerMove = (e: ReactPointerEvent) => {
+    if (!dragStart.current || e.pointerId !== dragStart.current.id) return;
+    const dx = e.clientX - dragStart.current.x;
+    const dy = e.clientY - dragStart.current.y;
+    // Only commit to a horizontal drag once intent is clear, so a vertical
+    // scroll gesture over the image isn't hijacked.
+    if (!dragging && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) {
+      e.currentTarget.setPointerCapture(e.pointerId);
+      setWithTransition(false);
+      setDragging(true);
+    }
+    if (dragging) setDragOffset(dx);
+  };
+
+  const endDrag = (e: ReactPointerEvent) => {
+    if (!dragStart.current || e.pointerId !== dragStart.current.id) return;
+    if (dragging) {
+      const width = containerRef.current?.clientWidth || 1;
+      const threshold = Math.min(80, width * 0.15);
+      setWithTransition(true);
+      if (dragOffset <= -threshold) {
+        setVirtualIndex(virtualIndex + 1);
+      } else if (dragOffset >= threshold) {
+        setVirtualIndex(virtualIndex - 1);
+      }
+    }
+    setDragOffset(0);
+    setDragging(false);
+    dragStart.current = null;
+  };
+
   const realIndex = ((virtualIndex - 1) % media.length + media.length) % media.length;
 
   return (
-    <div className="group relative w-full overflow-hidden rounded-2xl border border-black/10 dark:border-white/10">
+    <div
+      ref={containerRef}
+      className={`group relative w-full touch-pan-y overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 ${dragging ? "cursor-grabbing" : "cursor-grab"}`}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
+    >
       <div
         className={`flex ${withTransition ? "transition-transform duration-500 ease-out" : ""}`}
-        style={{ transform: `translateX(-${virtualIndex * 100}%)` }}
+        style={{
+          transform: `translateX(calc(-${virtualIndex * 100}% + ${dragOffset}px))`,
+        }}
         onTransitionEnd={handleTransitionEnd}
       >
         {extended.map((m, i) => (
@@ -51,7 +104,8 @@ function MediaGallery({ media }: { media: ProjectMedia[] }) {
               height={m.height}
               unoptimized
               priority
-              className="h-auto max-h-120 w-auto max-w-full"
+              draggable={false}
+              className="h-auto max-h-120 w-auto max-w-full select-none"
             />
           </div>
         ))}
@@ -62,7 +116,7 @@ function MediaGallery({ media }: { media: ProjectMedia[] }) {
             type="button"
             aria-label="이전 이미지"
             onClick={() => goTo(virtualIndex - 1)}
-            className="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-black/50 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
+            className="absolute top-1/2 left-2 -translate-y-1/2 rounded-full bg-black/50 p-1.5 text-white opacity-70 transition-opacity hover:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
           >
             ‹
           </button>
@@ -70,7 +124,7 @@ function MediaGallery({ media }: { media: ProjectMedia[] }) {
             type="button"
             aria-label="다음 이미지"
             onClick={() => goTo(virtualIndex + 1)}
-            className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-black/50 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100"
+            className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-black/50 p-1.5 text-white opacity-70 transition-opacity hover:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
           >
             ›
           </button>
