@@ -117,7 +117,7 @@ export const skillGroups = [
     ],
   },
   {
-    category: '운영 인프라',
+    category: '운영·인프라',
     items: [
       { name: 'Vercel', icon: 'https://skillicons.dev/icons?i=vercel' },
       { name: 'Supabase', icon: 'https://skillicons.dev/icons?i=supabase' },
