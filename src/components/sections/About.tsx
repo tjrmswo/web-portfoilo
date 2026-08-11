@@ -10,6 +10,9 @@ export default function About() {
         <div className="grid grid-cols-1 items-center gap-10 sm:grid-cols-[1fr_auto]">
           <div className="space-y-4">
             <p className="max-w-2xl text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
+              {about.motivation}
+            </p>
+            <p className="max-w-2xl text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
               {about.paragraph}
             </p>
             <p className="max-w-2xl text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">

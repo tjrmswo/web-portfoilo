@@ -10,6 +10,7 @@ export const intro = {
 };
 
 export const about = {
+  motivation: `개발자가 되고 싶다는 목표는 처음부터 분명했습니다. 교육 직군에 몸담고 있는 동안에도 그 꿈을 놓지 않고, ConnectingRoad와 본론 두 개의 사이드 프로젝트를 기획부터 배포까지 직접 진행해왔습니다.`,
   paragraph: `군 생활 중 시작한 헬스에서 '느리지만 매일 꾸준히 발전하는 과정의 가치'를 배웠고, 지금도 코드를 마주할 때 그 감각을 가장 큰 자산으로 삼습니다.`,
   content: `컴퓨터공학을 전공했고, "왜 이 문제가 발생했을까?"를 구조적으로 진단하고 고쳐나가는 과정에서 가장 큰 자아효능감을 느낍니다.`,
   hobby: `'노래'로 다져온 디테일과 완성도에 대한 고집은, 사용자와 가장 가까운 접점을 섬세하게 만드는 프론트엔드 작업으로 이어집니다.`,
@@ -73,13 +74,36 @@ export const skillGroups = [
   {
     category: '데이터·상태',
     items: [
-      { name: 'React Query', icon: 'https://cdn.simpleicons.org/reactquery' },
+      {
+        name: 'TanStack Query',
+        icon: 'https://cdn.simpleicons.org/reactquery',
+      },
       { name: 'Zustand', icon: '/icons/zustand.svg' },
       { name: 'Zod', icon: 'https://cdn.simpleicons.org/zod' },
       {
         name: 'React Hook Form',
         icon: 'https://cdn.simpleicons.org/reacthookform',
       },
+    ],
+  },
+  {
+    category: 'UI',
+    items: [
+      {
+        name: 'Tailwind CSS',
+        icon: 'https://skillicons.dev/icons?i=tailwind',
+      },
+      { name: 'shadcn/ui', icon: 'https://cdn.simpleicons.org/shadcnui' },
+    ],
+  },
+  {
+    category: 'AI 도구',
+    items: [
+      {
+        name: 'OpenAI API',
+        icon: 'https://api.iconify.design/logos:openai-icon.svg',
+      },
+      { name: 'Claude Code', icon: 'https://cdn.simpleicons.org/claude' },
     ],
   },
   {
@@ -90,18 +114,14 @@ export const skillGroups = [
         icon: 'https://raw.githubusercontent.com/feature-sliced/documentation/main/static/img/brand/logo-square.png',
       },
       { name: 'Git', icon: 'https://skillicons.dev/icons?i=git' },
-      {
-        name: 'GitHub Actions',
-        icon: 'https://skillicons.dev/icons?i=githubactions',
-      },
     ],
   },
   {
-    category: '인프라',
+    category: '배포·인프라',
     items: [
-      { name: 'AWS', icon: 'https://skillicons.dev/icons?i=aws' },
-      { name: 'Docker', icon: 'https://skillicons.dev/icons?i=docker' },
-      { name: 'NGINX', icon: 'https://skillicons.dev/icons?i=nginx' },
+      { name: 'Vercel', icon: 'https://skillicons.dev/icons?i=vercel' },
+      { name: 'Supabase', icon: 'https://skillicons.dev/icons?i=supabase' },
+      { name: 'PostHog', icon: 'https://cdn.simpleicons.org/posthog' },
     ],
   },
 ];
