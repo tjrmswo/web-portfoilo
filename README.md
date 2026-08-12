@@ -12,13 +12,6 @@ Intro → About → Strengths → Now → Skills → Projects → GitHub Activit
 - **Strengths**: About에서 드러나는 역량을 실제 프로젝트 성과와 연결해 보여줍니다.
 - **GitHub Activity**: 실제 GitHub 기여 그래프를 임베드합니다.
 
-## 기술 스택
-
-![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=flat-square&logo=next.js&logoColor=white)
-![React](https://img.shields.io/badge/React_19-149ECA?style=flat-square&logo=react&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
 
 ## 실행 방법
 
