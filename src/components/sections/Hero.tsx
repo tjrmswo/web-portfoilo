@@ -22,12 +22,14 @@ export default function Hero() {
             {intro.evidence}
           </p>
           <div className="mt-10 flex flex-wrap gap-4 text-sm font-medium">
+            {/* 이력서 다운로드 버튼: resumeUrl 미연결로 임시 비활성화
             <a
               href={intro.resumeUrl}
               className="rounded-full bg-black px-5 py-2.5 text-white transition-colors hover:bg-zinc-700 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
             >
               이력서 다운로드
             </a>
+            */}
             <a
               href={intro.githubUrl}
               target="_blank"
